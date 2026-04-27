@@ -1,0 +1,50 @@
+{
+  "validation_accuracy_default": 0.9836428571428572,
+  "validation_macro_f1_default": 0.9630687808869531,
+  "validation_accuracy_tuned": 0.9847380952380952,
+  "validation_macro_f1_tuned": 0.9684948936004972,
+  "probability_multipliers": {
+    "Low": 1.0,
+    "Medium": 1.2,
+    "High": 0.35
+  },
+  "class_weight": {
+    "Low": 0.5676949153458749,
+    "Medium": 0.8783891180136694,
+    "High": 9.995716121662145
+  },
+  "feature_count": 31,
+  "features": [
+    "Soil_Type",
+    "Soil_pH",
+    "Soil_Moisture",
+    "Organic_Carbon",
+    "Electrical_Conductivity",
+    "Temperature_C",
+    "Humidity",
+    "Rainfall_mm",
+    "Sunlight_Hours",
+    "Wind_Speed_kmh",
+    "Crop_Type",
+    "Crop_Growth_Stage",
+    "Season",
+    "Irrigation_Type",
+    "Water_Source",
+    "Field_Area_hectare",
+    "Mulching_Used",
+    "Previous_Irrigation_mm",
+    "Region",
+    "Rainfall_per_hectare",
+    "Total_Water_mm",
+    "Rain_minus_Previous_Irrigation",
+    "Moisture_Deficit",
+    "Heat_Dryness_Index",
+    "Evaporation_Proxy",
+    "Soil_Water_Retention",
+    "Salinity_Stress",
+    "Moisture_Rainfall_Ratio",
+    "Crop_Season",
+    "Soil_Irrigation",
+    "Region_Water"
+  ]
+}
