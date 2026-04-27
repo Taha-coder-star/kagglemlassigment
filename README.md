@@ -19,13 +19,13 @@ The runner creates separate submission files in:
 outputs/submissions/
 ```
 
-Default experiments:
+Default experiment:
 
-- `lgbm_holdout.csv`
-- `lgbm_scipy.csv`
-- `blend_holdout.csv`
+- `legacy_best.csv`
 
-Start by submitting `lgbm_holdout.csv` to Kaggle.
+Start by submitting `legacy_best.csv` to Kaggle. This recreates the older
+HistGBM setup that beat the newer LightGBM/blend experiments on the public
+leaderboard.
 
 See [COLAB_RUN.md](COLAB_RUN.md) for the full Colab setup.
 
@@ -40,7 +40,7 @@ python run_colab_pipeline.py --smoke-only
 Run one experiment:
 
 ```bash
-python run_colab_pipeline.py --experiments lgbm_holdout
+python run_colab_pipeline.py --experiments legacy_best
 ```
 
 Run the core model directly:

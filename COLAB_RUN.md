@@ -51,28 +51,27 @@ sample_submission.csv
 
 This runs:
 
-- `lgbm_holdout`
-- `lgbm_scipy`
-- `blend_holdout`
+- `legacy_best`
 
-Each submission is saved separately in `outputs/submissions/`.
+The submission is saved in `outputs/submissions/legacy_best.csv`.
 
 ## 5. Download a submission
 
 ```python
 from google.colab import files
-files.download("outputs/submissions/lgbm_holdout.csv")
+files.download("outputs/submissions/legacy_best.csv")
 ```
 
-Start by submitting `lgbm_holdout.csv`. Then try `lgbm_scipy.csv` and
-`blend_holdout.csv` if you still have Kaggle submissions available.
+Start by submitting `legacy_best.csv`. This is the safer fallback because the
+newer LightGBM/blend experiments scored worse than the earlier improved model
+on the public leaderboard.
 
 ## Optional Commands
 
 Run only one experiment:
 
 ```python
-!python run_colab_pipeline.py --experiments lgbm_holdout
+!python run_colab_pipeline.py --experiments legacy_best
 ```
 
 Run only the smoke test:
@@ -90,5 +89,5 @@ Skip the smoke test:
 Run a specific set:
 
 ```python
-!python run_colab_pipeline.py --experiments lgbm_holdout,lgbm_high_15
+!python run_colab_pipeline.py --experiments legacy_best,lgbm_holdout
 ```

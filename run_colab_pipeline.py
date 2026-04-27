@@ -21,8 +21,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 PIPELINE = ROOT / "src" / "improved_pipeline.py"
+LEGACY_PIPELINE = ROOT / "src" / "legacy_best_pipeline.py"
 
 EXPERIMENTS = {
+    "legacy_best": ["--legacy-best"],
     "histgbm_holdout": ["--holdout-only", "--model", "histgbm"],
     "lgbm_holdout": ["--holdout-only", "--model", "lgbm"],
     "lgbm_scipy": ["--holdout-only", "--model", "lgbm", "--use-scipy-threshold"],
@@ -43,7 +45,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", default="outputs")
     parser.add_argument(
         "--experiments",
-        default="lgbm_holdout,lgbm_scipy,blend_holdout",
+        default="legacy_best",
         help="Comma-separated experiment names. Available: "
         + ", ".join(EXPERIMENTS),
     )
@@ -81,6 +83,8 @@ def check_inputs(data_dir: Path) -> None:
 
     if not PIPELINE.exists():
         raise SystemExit(f"Missing pipeline script: {PIPELINE}")
+    if not LEGACY_PIPELINE.exists():
+        raise SystemExit(f"Missing legacy pipeline script: {LEGACY_PIPELINE}")
 
 
 def run_command(args: list[str]) -> None:
@@ -115,6 +119,14 @@ def preserve_outputs(experiment: str, output_dir: Path) -> None:
     for src, dst in artifact_pairs:
         if src.exists():
             shutil.copy2(src, dst)
+
+
+def preserve_legacy_outputs(output_dir: Path) -> None:
+    submissions = output_dir / "submissions"
+
+    submission_src = submissions / "legacy_best_submission.csv"
+    if submission_src.exists():
+        shutil.copy2(submission_src, submissions / "legacy_best.csv")
 
 
 def main() -> None:
@@ -163,18 +175,31 @@ def main() -> None:
         )
 
     for experiment in selected:
-        run_command(
-            [
-                sys.executable,
-                str(PIPELINE),
-                "--data-dir",
-                str(data_dir),
-                "--output-dir",
-                str(output_dir),
-                *EXPERIMENTS[experiment],
-            ]
-        )
-        preserve_outputs(experiment, output_dir)
+        if experiment == "legacy_best":
+            run_command(
+                [
+                    sys.executable,
+                    str(LEGACY_PIPELINE),
+                    "--data-dir",
+                    str(data_dir),
+                    "--output-dir",
+                    str(output_dir),
+                ]
+            )
+            preserve_legacy_outputs(output_dir)
+        else:
+            run_command(
+                [
+                    sys.executable,
+                    str(PIPELINE),
+                    "--data-dir",
+                    str(data_dir),
+                    "--output-dir",
+                    str(output_dir),
+                    *EXPERIMENTS[experiment],
+                ]
+            )
+            preserve_outputs(experiment, output_dir)
 
     print("\nFinished. Submit one of these files to Kaggle:")
     for csv_path in sorted((output_dir / "submissions").glob("*.csv")):
